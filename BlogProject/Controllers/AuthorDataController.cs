@@ -15,14 +15,14 @@ namespace BlogProject.Controllers
         // The database context class which allows us to access our MySQL Database.
         private BlogDbContext Blog = new BlogDbContext();
         
-        //This Controller Will access the authors table of our blog database.
+        //This Controller Will access the authors table of our blog database. Non-Deterministic.
         /// <summary>
         /// Returns a list of Authors in the system
         /// </summary>
-        /// <example>GET api/AuthorData/ListAuthors</example>
         /// <returns>
-        /// A list of authors (first names and last names)
+        /// A list of Author Objects with fields mapped to the database column values (first name, last name, bio).
         /// </returns>
+        /// <example>GET api/AuthorData/ListAuthors -> {Author Object, Author Object, Author Object...}</example>
         [HttpGet]
         [Route("api/AuthorData/ListAuthors/{SearchKey?}")]
         public IEnumerable<Author> ListAuthors(string SearchKey=null)
@@ -53,9 +53,9 @@ namespace BlogProject.Controllers
             {
                 //Access Column information by the DB column name as an index
                 int AuthorId = (int)ResultSet["authorid"];
-                string AuthorFname = (string)ResultSet["authorfname"];
-                string AuthorLname = (string)ResultSet["authorlname"];
-                string AuthorBio = (string)ResultSet["authorbio"];
+                string AuthorFname = ResultSet["authorfname"].ToString();
+                string AuthorLname = ResultSet["authorlname"].ToString();
+                string AuthorBio = ResultSet["authorbio"].ToString();
 
                 Author NewAuthor = new Author();
                 NewAuthor.AuthorId = AuthorId;
@@ -76,10 +76,12 @@ namespace BlogProject.Controllers
 
 
         /// <summary>
-        /// Returns an individual author from the database by specifying the primary key authorid
+        /// Finds an author from the MySQL Database through an id. Non-Deterministic.
         /// </summary>
-        /// <param name="id">the author's ID in the database</param>
-        /// <returns>An author object</returns>
+        /// <param name="id">The Author ID</param>
+        /// <returns>Author object containing information about the author with a matching ID. Empty Author Object if the ID does not match any authors in the system.</returns>
+        /// <example>api/AuthorData/FindAuthor/6 -> {Author Object}</example>
+        /// <example>api/AuthorData/FindAuthor/10 -> {Author Object}</example>
         [HttpGet]
         public Author FindAuthor(int id)
         {
@@ -106,9 +108,9 @@ namespace BlogProject.Controllers
             {
                 //Access Column information by the DB column name as an index
                 int AuthorId = (int)ResultSet["authorid"];
-                string AuthorFname = (string)ResultSet["authorfname"];
-                string AuthorLname = (string)ResultSet["authorlname"];
-                string AuthorBio = (string)ResultSet["authorbio"];
+                string AuthorFname = ResultSet["authorfname"].ToString();
+                string AuthorLname = ResultSet["authorlname"].ToString();
+                string AuthorBio = ResultSet["authorbio"].ToString();
                 DateTime AuthorJoinDate = (DateTime)ResultSet["authorjoindate"];
 
                 NewAuthor.AuthorId = AuthorId;
@@ -124,11 +126,10 @@ namespace BlogProject.Controllers
 
 
         /// <summary>
-        /// Removes an Author from the database
+        /// Deletes an Author from the connected MySQL Database if the ID of that author exists. Does NOT maintain relational integrity. Non-Deterministic.
         /// </summary>
-        /// <param name="id">The ID of the author to remove</param>
-        /// <example>POST : /api/AuthorData/DeleteAuthor/3</example>
-        /// <returns>Does not return anything.</returns>
+        /// <param name="id">The ID of the author.</param>
+        /// <example>POST /api/AuthorData/DeleteAuthor/3</example>
         [HttpPost]
         public void DeleteAuthor(int id)
         {
@@ -153,6 +154,20 @@ namespace BlogProject.Controllers
 
         }
 
+        /// <summary>
+        /// Adds an Author to the MySQL Database.
+        /// </summary>
+        /// <param name="NewAuthor">An object with fields that map to the columns of the author's table. Non-Deterministic.</param>
+        /// <example>
+        /// POST api/AuthorData/AddAuthor 
+        /// FORM DATA / POST DATA / REQUEST BODY 
+        /// {
+        ///	"AuthorFname":"Christine",
+        ///	"AuthorLname":"Bittle",
+        ///	"AuthorBio":"Likes Coding!",
+        ///	"AuthorEmail":"christine@test.ca"
+        /// }
+        /// </example>
         [HttpPost]
         public void AddAuthor([FromBody]Author NewAuthor)
         {
@@ -178,6 +193,9 @@ namespace BlogProject.Controllers
             cmd.ExecuteNonQuery();
 
             Conn.Close();
+
+
+
         }
 
     }
