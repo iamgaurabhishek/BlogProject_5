@@ -75,7 +75,11 @@ namespace BlogProject.Controllers
         }
 
 
-
+        /// <summary>
+        /// Returns an individual author from the database by specifying the primary key authorid
+        /// </summary>
+        /// <param name="id">the author's ID in the database</param>
+        /// <returns>An author object</returns>
         [HttpGet]
         public Author FindAuthor(int id)
         {
@@ -120,10 +124,11 @@ namespace BlogProject.Controllers
 
 
         /// <summary>
-        /// 
+        /// Removes an Author from the database
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The ID of the author to remove</param>
         /// <example>POST : /api/AuthorData/DeleteAuthor/3</example>
+        /// <returns>Does not return anything.</returns>
         [HttpPost]
         public void DeleteAuthor(int id)
         {
