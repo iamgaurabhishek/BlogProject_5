@@ -1,8 +1,11 @@
 # BlogProject_5
-Author "add" functionality
+Author "add" functionality, and Author "delete" functionality
 
-
+Delete Functionality
 [Video which goes over codebase](https://youtu.be/9Ic3EsoX-HA)
+
+Add Functionality
+[Video which goes over codebase](https://youtu.be/4jXECEDaAQE)
 
 ## How to Install:
 - Step 1 : Download [MAMP](https://www.mamp.info/en/downloads/) or similar MySQL environment
