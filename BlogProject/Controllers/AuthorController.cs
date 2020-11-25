@@ -60,6 +60,13 @@ namespace BlogProject.Controllers
             return View();
         }
 
+        //GET : /Author/Ajax_New
+        public ActionResult Ajax_New()
+        {
+            return View();
+
+        }
+
         //POST : /Author/Create
         [HttpPost]
         public ActionResult Create(string AuthorFname, string AuthorLname, string AuthorBio, string AuthorEmail)

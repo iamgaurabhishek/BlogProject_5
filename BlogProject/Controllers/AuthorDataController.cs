@@ -7,6 +7,7 @@ using System.Web.Http;
 using BlogProject.Models;
 using MySql.Data.MySqlClient;
 using System.Diagnostics;
+using System.Web.Http.Cors;
 
 namespace BlogProject.Controllers
 {
@@ -169,6 +170,7 @@ namespace BlogProject.Controllers
         /// }
         /// </example>
         [HttpPost]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
         public void AddAuthor([FromBody]Author NewAuthor)
         {
             //Create an instance of a connection
